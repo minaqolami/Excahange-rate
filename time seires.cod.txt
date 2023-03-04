@@ -1,0 +1,36 @@
+y=scan()
+factor=rep(1:26,each=21)
+factor1=factor[1:534]
+bartlett.test(y~factor1)
+oneway.test(y~factor1)
+y2=diff(y)
+
+y3=diff(y2)
+factor3=factor[1:532]
+bartlett.test(y3~factor3)
+
+oneway.test(y2~factor2)
+library(gplots)
+plotmeans(y3~factor3)
+acf(y3)
+pacf(y3)
+library(forecast)
+model=Arima(y,order=c(1,2,1))
+(1-pnorm(abs(model$coef)/sqrt(diag(model$var.coef))))*2
+f=fitted(model)
+ts.plot(y)
+lines(f,col="red")
+data.frame(y[5:7],f[5:7])
+r1=resid(model)
+library(FinTS)
+ArchTest(r)
+r2=r1^2
+eacf(r2)
+library(TSA)
+u=garch(r2,order=c(0,1))
+summary(u)
+library(rugarch)
+garch11.spec = ugarchspec(mean.model = list(armaOrder = c(1,2,1))
+variance.model = list(garchOrder = c(0,1))
+garch.fit = ugarchfit(garch11.spec, y2, fit.control=list(scale=TRUE))
+
